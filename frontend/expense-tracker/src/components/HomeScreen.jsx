@@ -26,8 +26,8 @@ import * as yup from "yup";
 
 const schema = yup
   .object({
-    transact: yup.string().required(),
-    category: yup.string().required(),
+    name: yup.string().required(),
+    type: yup.string().required(),
     amount: yup.number().positive().integer().required(),
   })
   .required();
@@ -66,9 +66,9 @@ const HomeScreen = () => {
                 <FormInput
                   type="text"
                   placeholder="Salary, Rent, etc"
-                  {...register("transact", { required: true })}
+                  {...register("name", { required: true })}
                 />
-                <SelectInput {...register("category", { required: true })}>
+                <SelectInput {...register("type", { required: true })}>
                   <option value="Expense" defaultValue="Expense">
                     Expense
                   </option>

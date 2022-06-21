@@ -17,6 +17,8 @@ const Graph = () => {
     datasets: [
       {
         label: "My First Dataset",
+
+        // you add extra data e.g 200 and add extra rgb to add extra chart i.e 4 different chart colors
         data: [300, 50, 100],
         backgroundColor: [
           "rgb(255, 99, 132)",

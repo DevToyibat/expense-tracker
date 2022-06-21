@@ -1,4 +1,8 @@
-// wee imported categories from schema.js
+// we imported categories from schema.js
+// you dont need to touch the schema after first definition.
+// in your controller, you only change the create categories like the type and color.
+// go to postman app, post and send
+// go to mongodb app and refresh
 
 const { Categories } = require("../models/schema");
 
@@ -8,8 +12,8 @@ const { Categories } = require("../models/schema");
 
 const createCategories = async (req, res) => {
   const Create = Categories({
-    type: "Expense",
-    color: "#FF7396",
+    type: "Savings",
+    color: "#646FD4",
   });
 
   // it should save if found, if not display an error message just likee 404

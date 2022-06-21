@@ -1,4 +1,5 @@
 // how to import mongoose
+// schema should not be touched after you'vee defined the first schema
 
 const mongoose = require("mongoose");
 
@@ -6,6 +7,7 @@ const mongoose = require("mongoose");
 
 const categorySchema = new mongoose.Schema(
   {
+    // local field
     type: { type: String, default: "Expense" },
     color: { type: String, default: "#FF7396" },
   },
@@ -18,6 +20,7 @@ const categorySchema = new mongoose.Schema(
 
 const transactionSchema = new mongoose.Schema(
   {
+    // foreign field
     name: { type: String },
     type: { type: String, default: "Expense" },
     amount: { type: Number },
