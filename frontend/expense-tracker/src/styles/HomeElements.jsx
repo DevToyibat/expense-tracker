@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { FaTrashAlt } from "react-icons/fa";
 
 export const Container = styled.div``;
 
@@ -117,15 +116,18 @@ export const HistoryBox = styled.div`
   gap: 80px;
   padding: 10px 15px;
   margin-bottom: 10px;
-  border-right: 8px solid #c43095;
+  border-right: ${({ brt }) => brt};
   border-radius: 5px;
   box-shadow: -1px 2px 10px -1px rgba(0, 0, 0, 0.51);
   -webkit-box-shadow: -1px 2px 10px -1px rgba(0, 0, 0, 0.51);
   -moz-box-shadow: -1px 2px 10px -1px rgba(0, 0, 0, 0.51);
 `;
-export const Icon = styled(FaTrashAlt)`
+export const Icon = styled.button`
   font-size: 20px;
   color: #c43095;
+  cursor: pointer;
+  border: none;
+  outline: none;
   // justify-self: flex-start;
 `;
 export const HistoryDesc = styled.div`

@@ -8,45 +8,34 @@ import {
   GraphTotal,
   GraphWrapper,
 } from "../styles/GraphStyles";
+import { useGetLabelsQuery } from "../reducer/expenseTrackerApi";
+import { chartData, getTotal } from "../helper/helper";
 
 Chart.register(ArcElement);
 
 const Graph = () => {
-  const data = {
-    labels: ["Red", "Blue", "Yellow"],
-    datasets: [
-      {
-        label: "My First Dataset",
+  const { data, isLoading, isSuccess, isError } = useGetLabelsQuery();
 
-        // you add extra data e.g 200 and add extra rgb to add extra chart i.e 4 different chart colors
-        data: [300, 50, 100],
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-        ],
-        hoverOffset: 4,
-        borderRadius: 30,
-        spacing: 10,
-        cutout: 115,
-      },
-    ],
-  };
-
-  const config = {
-    type: "doughnut",
-    data: data,
-  };
+  let graphData;
+  if (isLoading) {
+    graphData = <div>Loading data...</div>;
+  }
+  if (isSuccess) {
+    graphData = <Doughnut {...chartData(data)} />;
+  }
+  if (isError) {
+    graphData = <div>Error getting data!</div>;
+  }
 
   return (
     <GraphContainer>
       <GraphWrapper>
         <GraphData>
-          <Doughnut {...config} />
+          {graphData}
           <GraphTotal>
             <div>Total</div>
             <span>N</span>
-            <strong>20,000</strong>
+            <strong>{getTotal(data) ?? 0}</strong>
           </GraphTotal>
         </GraphData>
       </GraphWrapper>

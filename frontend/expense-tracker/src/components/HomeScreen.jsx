@@ -1,6 +1,11 @@
 import React from "react";
 import Labels from "./Labels";
 import {
+  useAddTransactionMutation,
+  useDeleteTransactionMutation,
+  useGetLabelsQuery,
+} from "../reducer/expenseTrackerApi";
+import {
   Chart,
   Container,
   ContentHolder,
@@ -19,6 +24,7 @@ import {
   TitleHolder,
   Wrapper,
 } from "../styles/HomeElements";
+import { FaTrashAlt } from "react-icons/fa";
 import Graph from "./Graph";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -33,15 +39,50 @@ const schema = yup
   .required();
 
 const HomeScreen = () => {
+  // object destructuring
+  const { data, isLoading, isSuccess, isError } = useGetLabelsQuery();
+  // Called array destructuring, we are destructuring mutation
+  const [deleteTransaction] = useDeleteTransactionMutation();
+  const handleDelete = async () => {
+    await deleteTransaction();
+  };
+
+  let Transactions;
+
+  if (isLoading) {
+    Transactions = <div>Loading data...</div>;
+  }
+
+  if (isSuccess) {
+    Transactions = data?.map((v, i) => (
+      <Description key={i}>
+        <HistoryBox brt={`8px solid ${v.color}`}>
+          <Icon onClick={() => deleteTransaction({ id: v._id })}>
+            <FaTrashAlt color={`${v.color}`} />
+          </Icon>
+          <HistoryDesc>{v.name}</HistoryDesc>
+        </HistoryBox>
+      </Description>
+    ));
+  }
+  if (isError) {
+    Transactions = <div>Oops! An error occured.</div>;
+  }
+
   const {
     handleSubmit,
     formState: { errors },
     register,
     reset,
-  } = useForm(schema);
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const submitHandler = (values) => {
-    console.log(values);
+  // pick and destructured this from expensetrackerapi. Called array destructuring, we are destructuring mutation
+  const [addTransaction] = useAddTransactionMutation();
+
+  const submitHandler = async (values) => {
+    await addTransaction(values).unwrap();
     reset();
   };
   return (
@@ -84,20 +125,13 @@ const HomeScreen = () => {
               </Form>
             </FormContainer>
             <h1>History</h1>
-            <Description>
+            {Transactions}
+            {/* <Description>
               <HistoryBox>
                 <Icon />
                 <HistoryDesc>Salary</HistoryDesc>
               </HistoryBox>
-              <HistoryBox>
-                <Icon />
-                <HistoryDesc>Expense</HistoryDesc>
-              </HistoryBox>
-              <HistoryBox>
-                <Icon />
-                <HistoryDesc>Investment</HistoryDesc>
-              </HistoryBox>
-            </Description>
+            </Description> */}
           </ContentRight>
         </ContentHolder>
       </Wrapper>

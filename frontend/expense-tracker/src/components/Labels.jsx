@@ -6,37 +6,32 @@ import {
   LabelName,
   LabelRight,
 } from "../styles/LabelStyle";
+import { useGetLabelsQuery } from "../reducer/expenseTrackerApi";
+import { getLabels } from "../helper/helper";
 
 const Labels = () => {
+  const { data, isLoading, isSuccess, isError } = useGetLabelsQuery();
+
+  let Transactions;
+
+  if (isLoading) {
+    Transactions = <div>Loading data...</div>;
+  }
+  if (isSuccess) {
+    Transactions = getLabels(data, "type")?.map((v, i) => (
+      <LabelContainer key={i}>
+        <LabelLeft>
+          <LabelColor bg={`${v.color}`} />
+          <LabelName>{v.type ?? ""}</LabelName>
+        </LabelLeft>
+        <LabelRight>{Math.round(v.percent) ?? 0}%</LabelRight>
+      </LabelContainer>
+    ));
+  }
+
   return (
     <>
-      <div>
-        <LabelContainer>
-          <LabelLeft>
-            <LabelColor />
-            <LabelName>Salary</LabelName>
-          </LabelLeft>
-          <LabelRight>32%</LabelRight>
-        </LabelContainer>
-      </div>
-      <div>
-        <LabelContainer>
-          <LabelLeft>
-            <LabelColor />
-            <LabelName>Expense</LabelName>
-          </LabelLeft>
-          <LabelRight>50%</LabelRight>
-        </LabelContainer>
-      </div>
-      <div>
-        <LabelContainer>
-          <LabelLeft>
-            <LabelColor />
-            <LabelName>Investment</LabelName>
-          </LabelLeft>
-          <LabelRight>66%</LabelRight>
-        </LabelContainer>
-      </div>
+      <div>{Transactions}</div>
     </>
   );
 };

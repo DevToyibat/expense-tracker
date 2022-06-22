@@ -15,7 +15,7 @@ export const LabelLeft = styled.div`
 export const LabelColor = styled.div`
   width: 10px;
   height: 30px;
-  background: #c43095;
+  background: ${({ bg }) => bg};
   border-radius: 5px;
 `;
 export const LabelName = styled.div`
